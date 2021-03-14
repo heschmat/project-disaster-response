@@ -13,6 +13,7 @@ from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
 #from sklearn.externals import joblib
 
+from plots import return_figures
 
 app = Flask(__name__)
 
@@ -37,38 +38,18 @@ model = joblib.load("../models/classifier.pkl")
 @app.route('/')
 @app.route('/index')
 def index():
-    
+    figures = return_figures()
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
-    graphs = [
-        {
-            'data': [
-                Bar(
-                    x=genre_names,
-                    y=genre_counts
-                )
-            ],
-
-            'layout': {
-                'title': 'Distribution of Message Genres',
-                'yaxis': {
-                    'title': "Count"
-                },
-                'xaxis': {
-                    'title': "Genre"
-                }
-            }
-        }
-    ]
+    
     
     # encode plotly graphs in JSON
-    ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
-    graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+    ids = ["graph-{}".format(i) for i, _ in enumerate(figures)]
+    # Convert the plotly figures to JSON for JS in HTML template
+    graphJSON = json.dumps(figures, cls=plotly.utils.PlotlyJSONEncoder)
     
     # render web page with plotly graphs
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
