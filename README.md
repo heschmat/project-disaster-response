@@ -47,9 +47,26 @@ Data Done!
 
 2. To process a new dataset you need to go to the `datasets` directory. An example to do ETL would be `python process_data.py messages.csv categories.csv DisasterResponse.db`. 
 Here, first and 2nd arguments - after the script - are the message and categories dataset. The last argument is the path to save the cleaned data into a database. 
+```
+(disaster_env) C> python process_data.py messages.csv categories.csv DisasterResponseDB.db
+Loading data...
+    MESSAGES: messages.csv
+    CATEGORIES: categories.csv
+Cleaning data...
+Saving data...
+    DATABASE: DisasterResponseDB.db
+Cleaned data saved to database!
+```
 
 3. To train the model, go to the `models` directory. To train the classifier run `python train_classifier.py ../datasets/DisasterResponse.db classifier.pkl`.
 Here, first argument is where the cleaned data stored in the database, and the last argument is the name with which you want to save the newly created classifier. 
+
+# Libraries
+- sqlalchemy
+- pandas
+- sklearn
+- flask
+- nltk
 
 # Challenges
 There are 36 categories in this dataset; 33 of the categories are flaged less than 20%. And 29 of them are flaged less than 10%. For this reason, `accuracy` is not a viable metric to judge the model performance. In this case, depending on the nature of the task, we may want to optimize the performance for `precision` or `recall`; or simply use `f1score` as a singular metric that takes both into account. 
