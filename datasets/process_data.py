@@ -25,6 +25,7 @@ def load_data(messages_filepath, categories_filepath):
     dfcats = dfcats.drop_duplicates()
     # Merge the two dataframes
     df = dfmsg.merge(dfcats, how= 'left', on= 'id')
+    return df
 
 
 def clean_data(df):
@@ -92,12 +93,11 @@ def main():
         print('Cleaned data saved to database!')
     
     else:
-        print('Please provide the filepaths of the messages and categories '\
-              'datasets as the first and second argument respectively, as '\
-              'well as the filepath of the database to save the cleaned data '\
-              'to as the third argument. \n\nExample: python process_data.py '\
-              'disaster_messages.csv disaster_categories.csv '\
-              'DisasterResponse.db')
+        print('Please provide the filepaths of the messages and categories '
+              'datasets as the first and second argument respectively,\nas '
+              'well as the filepath of the database to save the cleaned data '
+              'to as the third argument. \n\nExample: python process_data.py '
+              'messages.csv categories.csv DisasterResponseDB.db')
 
 
 if __name__ == '__main__':
