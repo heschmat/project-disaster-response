@@ -69,10 +69,13 @@ def clean_data(df):
     return df
 
 
-def save_data(df, database_filename='DisasterResponseDB'):
+def save_data(df, db_filename='DisasterResponse.db'):
     """Save the clean dataset into an sqlite database."""
-    engine = create_engine(f'sqlite:///{database_filename}.db')
-    df.to_sql('DisasterResponse', engine, index=False)
+    # Make sure 
+    if db_filename[-3:] != '.db':
+        db_filename += '.db'
+    engine = create_engine(f'sqlite:///{db_filename}')
+    df.to_sql('disaster_tbl', engine, index = False, if_exists = 'replace')
 
 
 def main():
@@ -97,7 +100,7 @@ def main():
               'datasets as the first and second argument respectively,\nas '
               'well as the filepath of the database to save the cleaned data '
               'to as the third argument. \n\nExample: python process_data.py '
-              'messages.csv categories.csv DisasterResponseDB.db')
+              'messages.csv categories.csv DisasterResponse.db')
 
 
 if __name__ == '__main__':

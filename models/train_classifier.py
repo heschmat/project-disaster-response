@@ -46,9 +46,13 @@ def load_data(db_filepath):
     y {np.array}: contains the 36 categories for messages
     labels {list of str}: the category names
     """
+    # Make sure the path ends with '.db'
+    if db_filepath[-3:] != '.db':
+        db_filepath += '.db'
     # Load data from database
-    engine = create_engine(f'sqlite:///{db_filepath}.db')
-    df = pd.read_sql_table('DisasterResponse', engine)
+    engine = create_engine(f'sqlite:///{db_filepath}')
+    # print('=====================> ', engine.table_names())
+    df = pd.read_sql_table('disaster_tbl', engine)
     # Organize the dataframe into separate entities for modeling
     X = df['message']
     y = df.iloc[:, 3:]
@@ -120,7 +124,7 @@ def build_pipeline():
         #'features__text_pipeline__vect__ngram_range': ((1, 1), (1, 2)),
         #'features__text_pipeline__tfidf__sublinear_tf': [False, True],
         #'features__text_pipeline__tfidf__norm': ['l1', 'l2'],
-        'clf__estimator__n_estimators': [20, 50],
+        'clf__estimator__n_estimators': [20, 10],
         #'clf__estimator__learning_rate': [1, .1]
     }
 
@@ -173,6 +177,7 @@ def main():
         pipe = build_pipeline()
         
         print('Training model...')
+        print('This takes a while, you could use a cup of coffee...')
         pipe.fit(X_train, y_train)
         
         print('Evaluating model...')
@@ -188,7 +193,7 @@ def main():
             'Please provide the filepath of the disaster messages database '
             'as the first argument and the filepath of the pickle file to '
             'save the model to as the second argument. \n\nExample: python '
-            'train_classifier.py ../dataset/DisasterResponseDB.db classifier.pkl'
+            'train_classifier.py ../datasets/DisasterResponse.db classifier.pkl'
         )
 
 
